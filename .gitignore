@@ -1,3 +1,5 @@
 node_modules/
 scrollcraft/builds/*/lab/
 .DS_Store
+site/lab/
+site/dist/

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Letter No. 1 · The Mahatma Letters</title>
+  <meta name="description" content="Simla, 1880. An editor asks for a miracle. The first Mahatma Letter, told scene by scene.">
+  <meta name="theme-color" content="#101319">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232A4A9A'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="gl" aria-hidden="true"></canvas>
+
+  <header class="chrome">
+    <p class="folio" id="folio" aria-live="polite"></p>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Chapters</button>
+  </header>
+
+  <nav class="menu" id="menu" aria-label="Chapters">
+    <ol>
+      <li><a href="#beat-1" data-beat="1">Title page</a></li>
+      <li><a href="#beat-2" data-beat="2"><span class="n">1</span>The Marvels of Simla</a></li>
+      <li class="soon"><span class="n">2</span>Unthinkable</li>
+      <li class="soon"><span class="n">3</span>Rome Before Romulus</li>
+      <li class="soon"><span class="n">4</span>The Modern Hookeses</li>
+      <li class="soon"><span class="n">5</span>Ever Crescendo</li>
+      <li class="soon"><span class="n">6</span>More Than One Martyr</li>
+      <li class="soon"><span class="n">7</span>The Natural Shields</li>
+      <li class="soon"><span class="n">8</span>At Mr. Hume's</li>
+      <li class="soon"><span class="n">9</span>Work With What You Have</li>
+      <li class="soon"><span class="n">10</span>Your Sincere Friend</li>
+      <li class="soon"><span class="n">11</span>Coda</li>
+    </ol>
+    <p class="menu__note">Chapters 2 to 11 are in preparation.</p>
+  </nav>
+
+  <main>
+    <div id="captions" class="captions" aria-live="polite"></div>
+  </main>
+
+  <p class="hint">Scroll, swipe or press <kbd>↓</kbd></p>
+  <div class="progress" aria-hidden="true"><span class="progress__fill"></span></div>
+
+  <div class="loading" aria-hidden="true"><span class="loading__bar"></span></div>
+  <div class="fallback">
+    <p>This telling of the letter needs WebGL, which this browser has turned off or doesn't support.</p>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
