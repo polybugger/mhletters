@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Letter No. 1 · The Mahatma Letters</title>
+<meta name="description" content="Simla, 1880. An editor asks for a miracle. An illustrated telling of the first Mahatma Letter, in eleven chapters.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232A4A9A'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  /* Newsprint and cobalt. The cobalt is the band on the cup. */
+  :root {
+    --sc-canvas:     #E7E4DB;
+    --sc-surface:    #DCD8CD;
+    --sc-ink:        #1A1D23;
+    --sc-ink-soft:   #4A505D;
+    --sc-accent:     #2A4A9A;
+    --sc-accent-ink: #F3F1EA;
+    --sc-font-display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
+    --sc-font-text:    "Libre Caslon Text", Georgia, serif;
+    --night: #15181E;
+    --folio-w: 4.25rem;
+  }
+  body { font-size: var(--sc-t-base); }
+
+  /* Soft stops: a fast flick settles on the next caption instead of passing it.
+     Proximity, never mandatory, so the page is never locked. */
+  html { scroll-snap-type: y proximity; }
+  .snap { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; pointer-events: none; }
+
+  /* ---------------------------------------------------------- the folio -- */
+  .folio {
+    position: fixed; z-index: var(--sc-z-chrome);
+    left: 0; top: 0; bottom: 0; width: var(--folio-w);
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .folio__text {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase; color: var(--sc-ink-soft);
+    white-space: nowrap;
+    transition: opacity var(--sc-d-base) var(--sc-ease-out);
+  }
+  .folio__text b { font-weight: 700; color: var(--sc-accent); }
+  .folio.is-night .folio__text { color: #A7ADBA; }
+  .folio.is-night .folio__text b { color: #9DB2EC; }
+
+  main { padding-left: var(--folio-w); }
+
+  /* ------------------------------------------------------ title page ---- */
+  .titlepage {
+    min-height: 100svh;
+    display: grid; align-content: center;
+    padding-block: var(--sc-section);
+  }
+  .titlepage__inner { max-width: 46rem; }
+  .kicker {
+    font-size: var(--sc-t-sm); letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase; color: var(--sc-ink-soft); margin: 0;
+  }
+  .titlepage h1 {
+    font-family: var(--sc-font-display); font-weight: 400;
+    font-size: clamp(3.4rem, 2rem + 6vw, 7rem); line-height: 0.96;
+    letter-spacing: var(--sc-track-tight); margin: var(--sc-5) 0 0;
+  }
+  .deck {
+    font-size: var(--sc-t-lg); line-height: 1.5; max-width: 34ch;
+    margin: var(--sc-6) 0 0; color: var(--sc-ink);
+  }
+  .rule { height: 1px; background: var(--sc-hairline-strong); border: 0; margin: var(--sc-9) 0 var(--sc-6); }
+  .contents { list-style: none; margin: 0; padding: 0; columns: 2 16rem; column-gap: var(--sc-8); }
+  .contents li {
+    break-inside: avoid; display: grid; grid-template-columns: 2.2rem 1fr; gap: var(--sc-2);
+    padding: var(--sc-2) 0; border-top: 1px solid var(--sc-hairline);
+    font-size: var(--sc-t-sm); color: var(--sc-ink-soft);
+  }
+  .contents .n { font-variant-numeric: tabular-nums; }
+  .contents a { color: var(--sc-ink); text-decoration: none; border-bottom: 1px solid var(--sc-accent); }
+  .contents a:hover { color: var(--sc-accent); }
+  .contents .soon { font-style: italic; }
+
+  /* -------------------------------------------------------- intertitle -- */
+  .intertitle {
+    --sc-ink: #ECE8DF; --sc-ink-soft: #A7ADBA; --sc-accent: #9DB2EC;
+    color: var(--sc-ink); background: var(--night);
+    min-height: 100svh; display: grid; align-content: center;
+    padding-block: var(--sc-section);
+  }
+  .intertitle .num { font-size: var(--sc-t-sm); letter-spacing: var(--sc-track-wide); text-transform: uppercase; color: var(--sc-accent); margin: 0; }
+  .intertitle h2 {
+    font-family: var(--sc-font-display); font-weight: 400;
+    font-size: clamp(2.6rem, 1.6rem + 4.4vw, 5.6rem); line-height: 1;
+    letter-spacing: var(--sc-track-tight); margin: var(--sc-4) 0 0;
+  }
+  .intertitle .card { font-style: italic; color: var(--sc-ink-soft); font-size: var(--sc-t-lg); margin: var(--sc-7) 0 0; max-width: 32ch; }
+
+  /* --------------------------------------------- the illustrated spread -- */
+  .chapter { background: var(--sc-canvas); }
+  .spread {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
+    gap: clamp(1.5rem, 3vw, 3.5rem); align-items: center;
+    padding: clamp(1.25rem, 5vh, 3.5rem) var(--sc-gutter) clamp(1.25rem, 5vh, 3.5rem) clamp(1rem, 2vw, 2rem);
+    height: 100%;
+  }
+  .plate {
+    position: relative; margin: 0;
+    width: 100%; aspect-ratio: 16 / 9; max-height: 84svh;
+    overflow: hidden; background: var(--sc-surface);
+    box-shadow: 0 1px 0 var(--sc-hairline), 0 18px 40px -24px hsl(var(--sc-shadow-color) / 0.45);
+  }
+  .plate__layer { position: absolute; inset: -7%; }
+  .plate__layer > img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
+  .plate__fig { position: absolute; }
+  .plate__fig > img { width: 100%; height: auto; max-width: none; }
+
+  .captions { display: grid; align-items: end; min-height: 18rem; }
+  .captions > * { grid-area: 1 / 1; }
+  .cap { margin: 0; }
+  .cap p { margin: 0; max-width: 40ch; text-wrap: pretty; }
+  .cap p + p { margin-top: var(--sc-4); }
+  .narr { color: var(--sc-ink-soft); font-style: italic; }
+  .who {
+    display: block; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide);
+    text-transform: uppercase; color: var(--sc-accent); font-style: normal; margin-bottom: var(--sc-1);
+  }
+  .line { font-size: var(--sc-t-lg); line-height: 1.45; color: var(--sc-ink); }
+  .kin { display: block; }
+
+  /* ------------------------------------------------- 1 · the hillside -- */
+  .hill .plate__fig--olcott   { left: 5%;  bottom: 2%;  width: 25%; }
+  .hill .plate__fig--hpb      { left: 29%; bottom: 0%;  width: 23%; }
+  .hill .plate__fig--sinnett  { left: 73%; bottom: 1%;  width: 21%; }
+
+  /* -------------------------------------------- 2 · the dig (signature) -- */
+  .dig .plate { background: #2b2720; }
+  .dig__pile { position: absolute; inset: 0; }
+  .dig__piece { position: absolute; max-width: none; will-change: transform, opacity; }
+  .dig__knife { position: absolute; left: 58%; top: 18%; width: 30%; max-width: none; will-change: transform, opacity; opacity: 0; }
+  .dig__glow {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(22% 30% at 55% 56%, rgb(255 250 235 / 0.55), transparent 70%);
+    mix-blend-mode: soft-light;
+  }
+
+  /* ------------------------------------------------- 3 · the fireside -- */
+  .fireside { padding-block: clamp(3rem, 8vh, 6rem) var(--sc-section); }
+  .fireside__grid {
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 1fr);
+    gap: clamp(1.5rem, 4vw, 4.5rem); align-items: start;
+    padding-inline: clamp(1rem, 2vw, 2rem) var(--sc-gutter);
+  }
+  .fireside figure { margin: 0; }
+  .fireside figure img { width: 100%; height: auto; }
+  .fireside figcaption { font-size: var(--sc-t-xs); color: var(--sc-ink-soft); margin-top: var(--sc-2); letter-spacing: var(--sc-track-wide); text-transform: uppercase; }
+  .fireside .sc-stack { padding-top: clamp(0rem, 4vh, 3rem); }
+
+  /* --------------------------------------------- 4 · Hume's drawing room -- */
+  .hume .plate__fig--hume    { left: 6%;  bottom: -12%; width: 24%; }
+  .hume .plate__fig--sinnett { left: 28%; bottom: -16%; width: 21%; }
+  .hume .plate__fig--hpb     { left: 74%; bottom: -10%; width: 17%; }
+  .brooch { margin: 0 0 var(--sc-5); width: 9.5rem; }
+  .brooch img { width: 100%; height: auto; }
+
+  /* --------------------------------------------------- 5 · the study ---- */
+  .study { padding-block: var(--sc-section); }
+  .study__grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 26rem);
+    gap: clamp(1.5rem, 4vw, 4.5rem); align-items: start;
+    padding-inline: clamp(1rem, 2vw, 2rem) var(--sc-gutter);
+  }
+  .study figure { margin: 0; }
+  .study figure img { width: 100%; height: auto; }
+  .manuscript {
+    margin: var(--sc-7) 0 0; padding: var(--sc-6) var(--sc-6) var(--sc-7);
+    background: #F1EEE6; color: #23262D;
+    box-shadow: 0 1px 0 var(--sc-hairline), 0 14px 30px -22px hsl(var(--sc-shadow-color) / 0.5);
+    font-style: italic; line-height: 1.7;
+  }
+  .manuscript p { margin: 0; }
+  .manuscript p + p { margin-top: var(--sc-3); }
+
+  /* ---------------------------------------------------- 6 · the doorway -- */
+  .close .spread { grid-template-columns: minmax(0, 0.8fr) minmax(17rem, 26rem); }
+  .close .plate { aspect-ratio: 9 / 16; max-height: 86svh; width: auto; height: 86svh; justify-self: end; }
+  .close .plate__fig--hpb { left: 8%; bottom: -12%; width: 84%; }
+  /* a slow push-in on the doorway, so the held frame keeps moving */
+  .close .plate > img:first-child { transform: scale(calc(1 + var(--sc-p, 0) * 0.08)); transform-origin: 50% 60%; }
+  .close__black {
+    position: absolute; inset: 0; background: var(--night); pointer-events: none;
+    opacity: calc(min(max((var(--sc-p, 0) - 0.74) / 0.1, 0), 1));
+  }
+  .colophon p { margin: 0; }
+  .colophon .end { font-family: var(--sc-font-display); font-size: var(--sc-t-2xl); line-height: 1.05; letter-spacing: var(--sc-track-snug); }
+  .colophon .next { margin-top: var(--sc-4); font-size: var(--sc-t-lg); }
+  .colophon .next a { text-decoration: none; border-bottom: 1px solid var(--sc-accent); color: var(--sc-ink); }
+  .colophon .next a:hover { color: var(--sc-accent); }
+  .colophon .small { margin-top: var(--sc-7); font-size: var(--sc-t-xs); color: var(--sc-ink-soft); max-width: 46ch; line-height: 1.55; }
+
+  /* ---------------------------------------------------------- phone ----- */
+  @media (max-width: 860px) {
+    :root { --folio-w: 0rem; }
+    .folio { width: auto; bottom: auto; right: 0; height: 2.25rem; justify-content: flex-start; padding-left: var(--sc-gutter); background: color-mix(in oklab, var(--sc-canvas) 92%, transparent); }
+    .folio.is-night { background: color-mix(in oklab, var(--night) 92%, transparent); }
+    .folio__text { writing-mode: horizontal-tb; transform: none; }
+    .spread { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: start; padding: 3rem var(--sc-gutter) 1.5rem; gap: 1.25rem; }
+    .captions { align-items: start; min-height: 0; }
+    .line { font-size: var(--sc-t-base); }
+    .close .spread { grid-template-columns: 1fr; }
+    .close .plate { height: 44svh; justify-self: center; }
+    .fireside__grid, .study__grid { grid-template-columns: 1fr; padding-inline: var(--sc-gutter); }
+    .titlepage, .intertitle { padding-inline: var(--sc-gutter); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dig__piece, .dig__knife { transition: opacity 200ms linear; }
+  }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<nav class="folio" aria-label="Where you are">
+  <span class="folio__text" id="folio">The Mahatma Letters · <b>Letter No. 1</b></span>
+</nav>
+
+<main id="top">
+
+  <!-- 0 · ANTICIPATION: the title page. Type on paper, nothing moving. -->
+  <section class="titlepage" data-folio="The Mahatma Letters · <b>Letter No. 1</b>">
+    <div class="sc-wrap">
+      <div class="titlepage__inner">
+        <p class="kicker">The Mahatma Letters to A. P. Sinnett</p>
+        <h1>Letter No. 1</h1>
+        <p class="deck">Simla, 1880. An editor asks for a miracle, and receives a refusal.</p>
+      </div>
+      <hr class="rule">
+      <ol class="contents" aria-label="Chapters">
+        <li><span class="n">1</span><a href="#ch1">The Marvels of Simla</a></li>
+        <li><span class="n">2</span><span>Unthinkable <span class="soon">(in preparation)</span></span></li>
+        <li><span class="n">3</span><span>Rome Before Romulus</span></li>
+        <li><span class="n">4</span><span>The Modern Hookeses</span></li>
+        <li><span class="n">5</span><span>Ever Crescendo</span></li>
+        <li><span class="n">6</span><span>More Than One Martyr</span></li>
+        <li><span class="n">7</span><span>The Natural Shields</span></li>
+        <li><span class="n">8</span><span>At Mr. Hume's</span></li>
+        <li><span class="n">9</span><span>Work With What You Have</span></li>
+        <li><span class="n">10</span><span>Your Sincere Friend</span></li>
+        <li><span class="n">11</span><span>Coda</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Chapter boundary: a full-stop intertitle on its own ground. -->
+  <section id="ch1" class="intertitle" data-sc-act="flow" data-folio="Chapter 1 of 11 · <b>The Marvels of Simla</b>" data-night>
+    <div class="sc-wrap" data-sc-reveal="up" data-sc-reveal-at="0.12 0.42">
+      <p class="num">Chapter 1</p>
+      <h2>The Marvels of Simla</h2>
+      <p class="card">Simla. The summer capital of British India. Early October, 1880.</p>
+    </div>
+  </section>
+
+  <div class="chapter" data-folio="Chapter 1 of 11 · <b>The Marvels of Simla</b>">
+
+  <!-- 1 · CURIOSITY: the hillside, four planes at different rates. -->
+  <section class="hill" data-sc-act="pin" data-sc-span="3.8">
+    <div data-sc-stage>
+      <div class="spread">
+        <figure class="plate" aria-label="A picnic on a hillside above Simla, with the snow peaks of the Himalaya behind">
+          <div class="plate__layer" data-sc-parallax="-1.5"><img src="assets/hill-back.jpg" width="1376" height="768" alt=""></div>
+          <div class="plate__layer" data-sc-parallax="-0.9"><img src="assets/hill-mid.png" width="1376" height="768" alt=""></div>
+          <div class="plate__layer" data-sc-parallax="-0.6">
+            <div class="plate__fig plate__fig--olcott"><img src="assets/cut-henry-steel-olcott.png" width="640" height="655" alt="Colonel Olcott"></div>
+            <div class="plate__fig plate__fig--hpb"><img src="assets/cut-helena-blavatsky.png" width="640" height="950" alt="Madame Blavatsky, chin on her hand"></div>
+            <div class="plate__fig plate__fig--sinnett"><img data-sc-cue="0.2 1 0.2 0" src="assets/cut-alfred-percy-sinnett.png" width="640" height="914" alt="Mr. Sinnett, standing apart"></div>
+          </div>
+          <div class="plate__layer" data-sc-parallax="1.1"><img src="assets/hill-front.png" width="1376" height="768" alt=""></div>
+        </figure>
+        <div class="captions">
+          <div class="cap" data-sc-cue="0 0.3 0">
+            <p class="narr">Deodar pines on a steep slope, and far off the white wall of the Himalaya. A picnic on rugs under the trees: a dozen English men and women in autumn tweeds and bonnets.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.26 0.52 0.15 0.15">
+            <p class="narr">Mr. Sinnett, editor of the <i>Pioneer</i>, stands apart with his notebook, watching everything like a man who writes for a living. Madame Blavatsky sits heavily on a folding chair, bored by the English. Colonel Olcott sits beside her.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.48 0.76 0.15 0.15">
+            <p class="narr">A servant lays out the tea things. Counts. Counts again.</p>
+            <p class="line"><span class="who">Servant</span>One cup short, memsahib.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.72 1 0.15 0.15">
+            <p class="line"><span class="who">A guest</span>Then someone must go without. Madame, I suppose you could not conjure us one?</p>
+            <p class="narr">Madame does not laugh. Slowly, she points at the ground between the roots of a tree.</p>
+            <p class="line"><span class="who">Blavatsky</span>Dig. There.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · WONDER, THE PEAK: the dig. The visitor's scroll is the knife. -->
+  <section class="dig" data-sc-act="pin" data-sc-span="5" data-sc-dwell="0.2" data-dig>
+    <div data-sc-stage>
+      <div class="spread">
+        <figure class="plate" aria-label="Earth between the roots of a deodar, scraped away to reveal a buried white china cup and saucer">
+          <img src="assets/dig-cup.jpg" width="1376" height="768" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none">
+          <div class="dig__glow" aria-hidden="true"></div>
+          <div class="dig__pile" aria-hidden="true">
+            <img class="dig__piece" src="assets/dig-clump-4.png" style="left:33%;top:52%;width:36%" data-r="-14" alt="">
+            <img class="dig__piece" src="assets/dig-clump-2.png" style="left:45%;top:38%;width:33%" data-r="12" alt="">
+            <img class="dig__piece" src="assets/dig-clump-1.png" style="left:31%;top:33%;width:31%" data-r="-18" alt="">
+            <img class="dig__piece" src="assets/dig-clump-5.png" style="left:51%;top:52%;width:29%" data-r="16" alt="">
+            <img class="dig__piece" src="assets/dig-clump-3.png" style="left:40%;top:57%;width:25%" data-r="-10" alt="">
+            <img class="dig__piece" src="assets/dig-piece-1.png" style="left:29%;top:42%;width:30%" data-r="-24" alt="">
+            <img class="dig__piece" src="assets/dig-piece-2.png" style="left:53%;top:33%;width:28%" data-r="22" alt="">
+            <img class="dig__piece" src="assets/dig-piece-3.png" style="left:44%;top:46%;width:22%" data-r="-30" alt="">
+            <img class="dig__piece" src="assets/dig-piece-6.png" style="left:57%;top:47%;width:18%" data-r="26" alt="">
+            <img class="dig__piece" src="assets/dig-piece-7.png" style="left:36%;top:60%;width:16%" data-r="-20" alt="">
+            <img class="dig__piece" src="assets/dig-piece-4.png" style="left:46%;top:30%;width:20%" data-r="18" alt="">
+            <img class="dig__piece" src="assets/dig-piece-8.png" style="left:62%;top:63%;width:9%" data-r="34" alt="">
+            <img class="dig__piece" src="assets/dig-piece-5.png" style="left:41%;top:43%;width:6%" data-r="-36" alt="">
+          </div>
+          <img class="dig__knife" src="assets/dig-knife.png" alt="" aria-hidden="true">
+        </figure>
+        <div class="captions">
+          <div class="cap" data-sc-cue="0 0.22 0">
+            <p class="narr">Someone snorts. A young officer grins, takes a knife from the hamper and kneels, playing along.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.18 0.46 0.15 0.15">
+            <p class="narr">He scrapes at the earth. Roots. Stones. More earth.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.42 0.62 0.15 0.15">
+            <p class="line">His knife strikes something hard.</p>
+            <p class="narr">He stops grinning.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.58 0.82 0.15 0.15">
+            <p class="narr">He brushes the soil away. White china. A cup, then a saucer, packed in earth. He holds them up beside the others.</p>
+            <p class="line">They match the set.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.78 1 0.15 0.15">
+            <p class="narr">Silence on the hillside. Then everyone speaks at once.</p>
+            <p class="line"><span class="who">A guest</span>It can't be. It cannot be.</p>
+            <p class="line"><span class="who">Another guest, dry</span>A clever servant and a spade the night before.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · INTIMACY: dusk by the fire. Ordinary reading, after the peak. -->
+  <section class="fireside" data-sc-act="flow">
+    <div class="fireside__grid">
+      <figure data-sc-in>
+        <img src="assets/fireside.jpg" width="1376" height="768" alt="A small campfire at dusk among the deodars, rugs and a hamper around it, the last light on the snow peaks">
+        <figcaption>Later, at dusk</figcaption>
+      </figure>
+      <div class="sc-stack" data-sc-in data-sc-stagger="70">
+        <p class="line"><span class="who">Sinnett, quietly</span>You saw her. She never left that chair.</p>
+        <p class="line"><span class="who">Olcott</span>She rarely needs to.</p>
+        <p class="narr">The party has thinned. Madame tears the corner from a cigarette paper and hands it to a guest to hold. Moments later the guest gasps at something in her palm. We do not see what she sees.</p>
+        <p class="narr">Sinnett sits a little apart, writing by firelight, filling page after page.</p>
+        <p class="line"><span class="who">Patience Sinnett, from the dark</span>Alfred, you will run out of paper before she runs out of wonders.</p>
+        <p class="narr">He smiles without looking up. Her hand rests on his shoulder for a moment, then is gone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · DOUBT: Hume's drawing room. One line assembles. -->
+  <section class="hume" data-sc-act="pin" data-sc-span="3.8">
+    <div data-sc-stage>
+      <div class="spread">
+        <figure class="plate" aria-label="Mr. Hume's lamplit drawing room after dinner, French windows open on a dark garden">
+          <div class="plate__layer" data-sc-parallax="-1.2"><img src="assets/hume-room.jpg" width="1376" height="768" alt=""></div>
+          <div class="plate__layer" data-sc-parallax="-0.6">
+            <div class="plate__fig plate__fig--hpb"><img src="assets/cut-helena-blavatsky.png" width="640" height="950" alt="Madame Blavatsky, watching from her chair"></div>
+            <div class="plate__fig plate__fig--hume"><img src="assets/cut-allan-octavian-hume.png" width="640" height="854" alt="Mr. Hume at the mantelpiece"></div>
+            <div class="plate__fig plate__fig--sinnett"><img data-sc-cue="0.44 1 0.15 0" src="assets/cut-alfred-percy-sinnett.png" width="640" height="914" alt="Mr. Sinnett beside him"></div>
+          </div>
+        </figure>
+        <div class="captions">
+          <div class="cap" data-sc-cue="0 0.3 0">
+            <figure class="brooch"><img src="assets/brooch.jpg" width="900" height="900" alt="A woman's hand holding a pearl brooch up to the lamp"></figure>
+            <p class="narr">After dinner at Mr. Hume's. Guests come in from the garden, excited. A woman's hand holds a small brooch up to the lamp.</p>
+            <p class="line"><span class="who">Mrs. Hume</span>I lost it years ago. Years.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.26 0.5 0.15 0.15">
+            <p class="narr">Madame stays in her chair, smoking. Hume does not move from the mantelpiece. He watches Madame Blavatsky, not the brooch.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.46 0.7 0.15 0.15">
+            <p class="line"><span class="who">Sinnett</span>Well, Hume?</p>
+            <p class="line"><span class="who">Hume, pleasantly</span>Well. A charming evening, and a lady made very happy.</p>
+            <p class="line"><span class="who">Sinnett</span>That is not an answer.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.66 0.86 0.15 0.15">
+            <p class="line"><span class="who">Hume</span><span class="kin" data-sc-cue="0.66 0.86 0.15 0.15" data-sc-kinetic="lines">Ask me what I can prove, and I shall tell you: nothing, yet.</span></p>
+            <p class="narr">Ask him what a jury of sensible men would say, and Sinnett knows it already.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.82 1 0.15 0.15">
+            <p class="line"><span class="who">Sinnett</span>Then we must give the sensible men something they cannot explain away.</p>
+            <p class="narr">Across the room, Madame looks up and meets his eye. She has heard every word.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · RESOLVE: the study. The plate wipes in, the proposal is written. -->
+  <section class="study" data-sc-act="flow">
+    <div class="study__grid">
+      <figure data-sc-reveal="up" data-sc-reveal-at="0.1 0.42">
+        <img src="assets/study.jpg" width="1376" height="768" alt="Sinnett's study at night: one lamp, newspapers on the desk, the dug-up cup beside them, mist at the window">
+      </figure>
+      <div>
+        <div class="sc-stack" data-sc-in data-sc-stagger="70">
+          <p class="narr">Later that night. A narrow, cluttered room. On the desk, the <i>Pioneer</i>, folded open at his own report of the Simla wonders. Beside it, another paper, open at a mocking reply. And the cup from the picnic: he has kept it.</p>
+          <p class="line"><span class="who">Sinnett, to himself</span>One case. One story. And they laugh at it over breakfast.</p>
+          <p class="narr">He sits, pulls a clean sheet toward him, and dips his pen.</p>
+        </div>
+        <div class="manuscript" data-sc-in data-sc-stagger="80" aria-label="Sinnett's letter">
+          <p>…a test which no reasonable man could dispute…</p>
+          <p>…a newspaper, printed in London, here in Simla on the very day of its publication…</p>
+          <p>Give me that, and I will put it before the world. Half London would be converted if you could deliver them a <i>Pioneer</i> on its day of publication.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · FOREBODING: the doorway. The last act holds. -->
+  <section class="close" data-sc-act="pin" data-sc-span="3.4">
+    <div data-sc-stage>
+      <div class="spread">
+        <figure class="plate" aria-label="The open study door at night, a candle's glow fading down the corridor">
+          <img src="assets/doorway.jpg" width="768" height="1376" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none">
+          <div class="plate__fig plate__fig--hpb"><img data-sc-cue="0 0.74 0 0.25" src="assets/cut-helena-blavatsky.png" width="640" height="950" alt="Madame Blavatsky in the doorway"></div>
+          <div class="close__black" aria-hidden="true"></div>
+        </figure>
+        <div class="captions">
+          <div class="cap" data-sc-cue="0 0.26 0">
+            <p class="narr">A knock. Madame Blavatsky in the doorway, a shawl around her shoulders, a candle in her hand.</p>
+            <p class="line"><span class="who">Blavatsky</span>You are writing to them.</p>
+            <p class="line"><span class="who">Sinnett</span>I am writing to whoever reads what I give you. Will you send it?</p>
+          </div>
+          <div class="cap" data-sc-cue="0.22 0.46 0.15 0.15">
+            <p class="narr">She takes the letter. She does not read it.</p>
+            <p class="line"><span class="who">Blavatsky</span>They do not do tricks for editors, my dear Mr. Sinnett.</p>
+            <p class="line"><span class="who">Sinnett</span>It is not a trick if it is true. That is the whole point.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.42 0.64 0.15 0.15">
+            <p class="line"><span class="who">Blavatsky, tired</span>You think the world is waiting for proof. You have not seen what the world does with it.</p>
+            <p class="line"><span class="who">Sinnett</span>Then let them tell me so themselves.</p>
+          </div>
+          <div class="cap" data-sc-cue="0.62 0.84 0.15 0.15">
+            <p class="narr">She tucks the letter into her shawl.</p>
+            <p class="line"><span class="who">Blavatsky</span>They will.</p>
+          </div>
+          <div class="cap colophon" data-sc-cue="0.82">
+            <p class="end">End of Chapter 1.</p>
+            <p class="next">Next: <a href="#top">Chapter 2: Unthinkable</a> (in preparation)</p>
+            <p class="small">The letter: <i>The Mahatma Letters to A. P. Sinnett</i>, Letter No. 1, ed. A. T. Barker (1923). This chapter is a dramatized prologue: its scenes and dialogue are invented from the historical context, not quoted from the letter. Illustrations generated with Google Gemini.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>ScrollCraft.mount(document.body);</script>
+<script>
+/* Snap points: one per caption, placed at the middle of that caption's
+   full-opacity plateau, so wherever a flick lands the nearest stop is a line
+   the reader can read. Computed from each caption's own cue, so retiming a
+   cue moves its stop with it. */
+(function () {
+  function plateauMid(v) {
+    var n = v.trim().split(/\s+/).map(parseFloat);
+    var from = n[0];
+    if (n.length === 1) return Math.min(from + 0.19, 1);   // one-value cues reach full 0.18 after they start
+    var to = n[1], win = to - from;
+    var rIn = n.length > 2 ? n[2] : 0.3, rOut = n.length > 3 ? n[3] : 0.3;
+    return (from + win * rIn + to - win * rOut) / 2;
+  }
+  var acts = [].slice.call(document.querySelectorAll('section[data-sc-act="pin"]'));
+  // the engine's dwell remap (p = dwell(raw)); invert it so a stop placed for
+  // a cue time lands at the scroll position where that cue time happens
+  function dwell(x, L) { var c = x - 0.5; return (1 - L) * x + L * (4 * c * c * c + 0.5); }
+  function undwell(p, L) {
+    if (!L) return p;
+    var lo = 0, hi = 1;
+    for (var i = 0; i < 40; i++) { var mid = (lo + hi) / 2; if (dwell(mid, L) < p) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+  acts.forEach(function (act) {
+    var L = parseFloat(act.getAttribute('data-sc-dwell')) || 0;
+    act._snaps = [].slice.call(act.querySelectorAll('.captions > [data-sc-cue]')).map(function (cap) {
+      var m = document.createElement('div');
+      m.className = 'snap'; m.setAttribute('aria-hidden', 'true');
+      m._at = undwell(plateauMid(cap.getAttribute('data-sc-cue')), L);
+      act.appendChild(m);
+      return m;
+    });
+  });
+  function place() {
+    acts.forEach(function (act) {
+      var travel = Math.max(act.offsetHeight - innerHeight, 0);
+      act._snaps.forEach(function (m) { m.style.top = Math.round(m._at * travel) + 'px'; });
+    });
+  }
+  requestAnimationFrame(place);
+  addEventListener('resize', place);
+  // test switch: ?nosnap lets the verification harness sample the scroll itself
+  if (/[?&]nosnap\b/.test(location.search)) document.documentElement.style.scrollSnapType = 'none';
+})();
+</script>
+<script>
+/* Verification: the harness's dead-scroll check sees cues, clips, rails and
+   wipes, but not parallax planes, the dig or the doorway push-in. Each pinned
+   stage publishes the rounded positions it actually paints (to 4px), as
+   verify.md asks for page-local motion. Rendered values, not raw progress. */
+(function () {
+  var stages = [].slice.call(document.querySelectorAll('section[data-sc-act="pin"] [data-sc-stage]'));
+  function ty(el) { var m = getComputedStyle(el).transform; return m === 'none' ? 0 : new DOMMatrixReadOnly(m).m42; }
+  function sc(el) { var m = getComputedStyle(el).transform; return m === 'none' ? 1 : new DOMMatrixReadOnly(m).a; }
+  function tick() {
+    stages.forEach(function (st) {
+      var parts = [].slice.call(st.querySelectorAll('[data-sc-parallax], .dig__piece')).map(function (el) {
+        return Math.round(ty(el) / 4) + (el.classList.contains('dig__piece') ? ':' + Math.round(parseFloat(getComputedStyle(el).opacity) * 10) : '');
+      });
+      var door = st.querySelector('.close .plate > img:first-child');
+      if (door) parts.push(Math.round(sc(door) * 100));
+      st.setAttribute('data-sc-verify-state', parts.join(','));
+    });
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script>
+/* The folio: margin running head, one line per chapter. */
+(function () {
+  var folio = document.getElementById('folio');
+  var bar = folio.parentNode;
+  var marks = document.querySelectorAll('[data-folio]');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      folio.innerHTML = e.target.getAttribute('data-folio');
+      bar.classList.toggle('is-night', e.target.hasAttribute('data-night'));
+    });
+  }, { rootMargin: '-48% 0px -48% 0px' });
+  marks.forEach(function (m) { io.observe(m); });
+})();
+
+/* The dig: the signature move. Each piece of earth lifts off the pile at its
+   own point in the act's progress, top of the pile first, so the visitor's
+   scroll is the knife. Reads --sc-p from the act; the engine is untouched. */
+(function () {
+  var act = document.querySelector('[data-dig]');
+  if (!act) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pieces = [].slice.call(act.querySelectorAll('.dig__piece')).reverse();  // top first
+  var knife = act.querySelector('.dig__knife');
+  var glow = act.querySelector('.dig__glow');
+  var A = 0.12, B = 0.58, W = 0.07;            // first lift, last lift, lift length
+  var smooth = function (x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
+  pieces.forEach(function (el, i) {
+    el._t = A + (B - A) * (i / Math.max(pieces.length - 1, 1));
+    var cx = parseFloat(el.style.left) + parseFloat(el.style.width) / 2;
+    el._dx = (cx - 50) * 9;                     // fling outward from the pile's centre
+    el._r = parseFloat(el.getAttribute('data-r')) || 0;
+  });
+  var on = false, last = -1;
+  new IntersectionObserver(function (es) { on = es[0].isIntersecting; if (on) tick(); }).observe(act);
+  function tick() {
+    if (!on) return;
+    var p = parseFloat(getComputedStyle(act).getPropertyValue('--sc-p')) || 0;
+    if (p !== last) {
+      last = p;
+      for (var i = 0; i < pieces.length; i++) {
+        var el = pieces[i], k = smooth((p - el._t) / W);
+        el.style.opacity = (1 - k).toFixed(3);
+        el.style.transform = reduce ? 'none' :
+          'translate3d(' + (el._dx * k).toFixed(1) + 'px,' + (-170 * k).toFixed(1) + 'px,0) rotate(' + (el._r * k).toFixed(1) + 'deg)';
+      }
+      // the knife: in at the first scrape, a scraping stroke while the pile
+      // comes off, a jolt when it strikes china, then it withdraws
+      var kin = smooth((p - 0.06) / 0.06) * (1 - smooth((p - 0.64) / 0.06));
+      knife.style.opacity = kin.toFixed(3);
+      if (!reduce) {
+        var scrape = Math.sin(p * 120) * 10 * (p < 0.6 ? 1 : 0);
+        var jolt = (p > 0.5 && p < 0.6) ? Math.sin(p * 900) * 3 : 0;
+        knife.style.transform = 'translate3d(' + (scrape + jolt).toFixed(1) + 'px,' + (scrape * 0.4).toFixed(1) + 'px,0) rotate(-8deg)';
+      }
+      glow.style.opacity = smooth((p - 0.56) / 0.12).toFixed(3);
+    }
+    requestAnimationFrame(tick);
+  }
+})();
+</script>
+</body>
+</html>

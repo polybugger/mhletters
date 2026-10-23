@@ -1,0 +1,8 @@
+{
+  "name": "mahatma-letter-001",
+  "private": true,
+  "description": "scroll-craft build: The Mahatma Letters, Letter No. 1",
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

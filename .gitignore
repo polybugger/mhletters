@@ -1,0 +1,3 @@
+node_modules/
+scrollcraft/builds/*/lab/
+.DS_Store
